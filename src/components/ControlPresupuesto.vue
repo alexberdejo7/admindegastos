@@ -1,15 +1,23 @@
 <script setup>
-
 import imagen from '../assets/img/grafico.jpg'
+import { formatearCantidad } from '../helpers/index'
   
+const props = defineProps({
+  presupuesto: {
+    type: Number,
+    required: true
+  },
+  disponible: {
+    type: Number,
+    required: true
+  }
+})
 </script>
-
 
 <template>
   <div class="dos-columnas">
     <div class="contenedor-grafico">
       <img :src="imagen">
-    
     </div>
     <div class="contenedor-presupuesto">
       <button class="reset-app">
@@ -17,33 +25,25 @@ import imagen from '../assets/img/grafico.jpg'
       </button>
 
       <p>
-        <span> Presupuesto: </span>
-        0
+        <span>Presupuesto: </span>
+        {{ formatearCantidad(presupuesto) }}
       </p>
       <p>
-        <span> Disponible:</span>
-        0
+        <span>Disponible: </span>
+        {{ formatearCantidad(disponible) }}
       </p>
       <p>
-        <span> Gastado: </span>
+        <span>Gastado: </span>
         0
       </p>
-      
-
-
-
-
     </div>
   </div>
 </template>
-
-
 
 <style scoped>
 .dos-columnas {
   display: flex;
   flex-direction: column;
-
 }
 
 .dos-columnas :first-child {
@@ -51,13 +51,14 @@ import imagen from '../assets/img/grafico.jpg'
 }
 
 @media (min-width: 768px) {
-    .dos-columnas {
+  .dos-columnas {
     flex-direction: row;
     gap: 4rem;
     align-items: center;
   }
 }
-  .dos-columnas :first-child {
+
+.dos-columnas :first-child {
   margin-bottom: 0rem;
 }
 
@@ -65,15 +66,13 @@ import imagen from '../assets/img/grafico.jpg'
   background-color: #e62019;
   border: none;
   padding: 1rem;
-  widows: 100%;
+  width: 100%;
   color: var(--blanco);
   font-weight: 640;
   text-transform: uppercase;
   border-radius: 1rem;
   transition-property: background-color;
   transition-duration: 300ms;
-
-
 }
 
 .reset-app:hover {
@@ -83,31 +82,23 @@ import imagen from '../assets/img/grafico.jpg'
 
 .contenedor-presupuesto {
   width: 100%;
-
 }
 
 .contenedor-presupuesto p {
   font-size: 2.4rem;
   text-align: center;
   color: var(--gris-oscuro);
-
 }
+
 @media (min-width: 768px) {
   .contenedor-presupuesto p {
-  font-size: 2.4rem;
-  text-align: left;
+    font-size: 2.4rem;
+    text-align: left;
+  }
   
+  .contenedor-presupuesto span {
+    font-weight: 900;
+    color: var(--azul);
+  }
 }
-.contenedor-presupuesto span {
-font-weight: 900;
-color: var(--azul);
-}
-
-
-
-
-}
-
-
-
 </style>

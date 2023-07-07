@@ -30,7 +30,7 @@ const definirPresupuesto = () => {
 
     <form 
     class="presupuesto"
-    @submit.prevents="definirPresupuesto"
+    @submit.prevent="definirPresupuesto"
     >
 
     <Alerta
