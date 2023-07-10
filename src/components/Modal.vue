@@ -6,8 +6,8 @@ import cerrando from '../assets/img/cerrar.svg'
 const error = ref('')
 
 
-const emit = defineEmits(['cerrar-modal', 'update:nombre',
-       'update:cantidad', 'update:categoria'])
+const emit = defineEmits(['cerrar-modal', 'save-gasto', 'update:nombre',
+       'update:cantidad', 'update:categoria', ])
 
 const props = defineProps({
   modal: {
@@ -51,7 +51,10 @@ const addGasto = () => {
       return
       
   }
-  console.log('emitiendogasto')
+
+  emit('save-gasto')
+
+  
 // quiero ejecutar este console.log si las validacionesa anterios se cumples, es decir si se agregaron todos los campos
 }
 

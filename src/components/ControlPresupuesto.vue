@@ -1,4 +1,5 @@
 <script setup>
+
 import imagen from '../assets/img/grafico.jpg'
 import { formatearCantidad } from '../helpers/index'
   
@@ -10,14 +11,24 @@ const props = defineProps({
   disponible: {
     type: Number,
     required: true
+  },
+  gastado: {
+    type: Number,
+    required: true
+
   }
 })
+
+
+
 </script>
+
 
 <template>
   <div class="dos-columnas">
     <div class="contenedor-grafico">
       <img :src="imagen">
+    
     </div>
     <div class="contenedor-presupuesto">
       <button class="reset-app">
@@ -25,25 +36,33 @@ const props = defineProps({
       </button>
 
       <p>
-        <span>Presupuesto: </span>
+        <span> Presupuesto: </span>
         {{ formatearCantidad(presupuesto) }}
       </p>
       <p>
-        <span>Disponible: </span>
-        {{ formatearCantidad(disponible) }}
+        <span> Disponible:</span>
+        {{formatearCantidad(disponible)}}
       </p>
       <p>
-        <span>Gastado: </span>
-        0
+        <span> Gastado: </span>
+        {{formatearCantidad(gastado)}}
       </p>
+      
+
+
+
+
     </div>
   </div>
 </template>
+
+
 
 <style scoped>
 .dos-columnas {
   display: flex;
   flex-direction: column;
+
 }
 
 .dos-columnas :first-child {
@@ -51,14 +70,13 @@ const props = defineProps({
 }
 
 @media (min-width: 768px) {
-  .dos-columnas {
+    .dos-columnas {
     flex-direction: row;
     gap: 4rem;
     align-items: center;
   }
 }
-
-.dos-columnas :first-child {
+  .dos-columnas :first-child {
   margin-bottom: 0rem;
 }
 
@@ -66,13 +84,15 @@ const props = defineProps({
   background-color: #e62019;
   border: none;
   padding: 1rem;
-  width: 100%;
+  widows: 100%;
   color: var(--blanco);
   font-weight: 640;
   text-transform: uppercase;
   border-radius: 1rem;
   transition-property: background-color;
   transition-duration: 300ms;
+
+
 }
 
 .reset-app:hover {
@@ -82,23 +102,31 @@ const props = defineProps({
 
 .contenedor-presupuesto {
   width: 100%;
+
 }
 
 .contenedor-presupuesto p {
   font-size: 2.4rem;
   text-align: center;
   color: var(--gris-oscuro);
-}
 
+}
 @media (min-width: 768px) {
   .contenedor-presupuesto p {
-    font-size: 2.4rem;
-    text-align: left;
-  }
+  font-size: 2.4rem;
+  text-align: left;
   
-  .contenedor-presupuesto span {
-    font-weight: 900;
-    color: var(--azul);
-  }
 }
+.contenedor-presupuesto span {
+font-weight: 900;
+color: var(--azul);
+}
+
+
+
+
+}
+
+
+
 </style>
