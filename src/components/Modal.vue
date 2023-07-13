@@ -26,13 +26,17 @@ const props = defineProps({
   categoria: {
     type: String,
     required: true
+  },
+  disponible: {
+    type: Number,
+    required: true
   }
 
 })
 
 const addGasto = () => {
   // Validar que no haya campos vacioS Y CANTIDAD 
-  const { nombre, cantidad, categoria } = props 
+  const { nombre, cantidad, categoria, disponible} = props 
   if([nombre, cantidad, categoria].includes('')) {
     error.value = 'Todos los campos son obligatorios!'
     
@@ -41,6 +45,19 @@ const addGasto = () => {
     }, 2500 );
     return 
   }
+
+// Valdiar que usuario no gaste mas de disponible
+if(cantidad > disponible) {
+      error.value = 'Excedido de presupuesto'
+
+      setTimeout(() => {
+        error.value = ''
+      }, 2500);
+      return
+      
+  }
+
+
 
   if(cantidad <= 0) {
       error.value = 'Cantidad no valida'

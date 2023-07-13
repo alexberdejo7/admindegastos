@@ -26,6 +26,9 @@ const props = defineProps({
     required: true
   }
 })
+
+
+defineEmits(['select-gasto'])
 </script>
 
 
@@ -38,7 +41,10 @@ const props = defineProps({
       class="icono">
       <div class="detalles">
         <p class="categoria"> {{ gasto.categoria }} </p>
-        <p class="nombre">{{ gasto.nombre }} </p>
+        <p 
+        class="nombre"
+        @click="$emit('select-gasto', gasto.id)"
+        >{{ gasto.nombre }} </p>
 
         <p class="fecha">
           Fecha:

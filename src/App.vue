@@ -34,7 +34,14 @@ watch(gastos, () => {
   disponible.value = presupuesto.value - totalGastado
 }, {
   deep:true
-
+})
+//reiniciar modal
+watch(modal, () => {
+if(modal.mostrar) {
+  stateResetGasto();
+}
+}, {
+  deep: true
 })
 
 
@@ -69,8 +76,10 @@ const saveGasto = () => {
     id: generateId(),
   })
   cerrarModal()
+  stateResetGasto()
 
   // Limpiar formulario
+const stateResetGasto = () => {
   Object.assign(gasto, {
     nombre: '',
     cantidad: '',
@@ -78,6 +87,15 @@ const saveGasto = () => {
     id: null,
     fecha: Date.now()
   })
+}
+
+}
+
+
+const selectGasto = (id) => {
+  const gastoEdit = gastos.value.filter(gasto => gasto.id === id)[0]
+  Object.assign(gasto, gastoEdit)
+  mostrarModal()
 }
 
 
@@ -113,10 +131,12 @@ const saveGasto = () => {
 
         <div class="listado-gastos contenedor">
           <h2> {{gastos.length > 0 ? 'Gastos' : 'No hay gastos'}} </h2> 
+
           <Gasto 
           v-for="gasto in gastos"
           :key="gasto.id"
           :gasto="gasto"
+          @select-gasto="selectGasto"
           
           />
         </div>
@@ -135,6 +155,7 @@ const saveGasto = () => {
         @cerrar-modal="cerrarModal"
         @save-gasto="saveGasto"
         :modal="modal"
+        :disponible="disponible"
         v-model:nombre="gasto.nombre"
         v-model:cantidad="gasto.cantidad"
         v-model:categoria="gasto.categoria"
