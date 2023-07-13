@@ -35,10 +35,23 @@ watch(gastos, () => {
 }, {
   deep:true
 })
+
+
+  // Limpiar formulario
+  const stateResetGasto = () => {
+  Object.assign(gasto, {
+    nombre: '',
+    cantidad: '',
+    categoria: '',
+    id: null,
+    fecha: Date.now()
+  })
+}
 //reiniciar modal
 watch(modal, () => {
 if(modal.mostrar) {
   stateResetGasto();
+  
 }
 }, {
   deep: true
@@ -78,16 +91,7 @@ const saveGasto = () => {
   cerrarModal()
   stateResetGasto()
 
-  // Limpiar formulario
-const stateResetGasto = () => {
-  Object.assign(gasto, {
-    nombre: '',
-    cantidad: '',
-    categoria: '',
-    id: null,
-    fecha: Date.now()
-  })
-}
+
 
 }
 
