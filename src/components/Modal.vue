@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from 'vue'
+import { ref } from 'vue'
 import Alerta from './Alerta.vue'
 import cerrando from '../assets/img/cerrar.svg'
 
@@ -30,51 +30,58 @@ const props = defineProps({
   disponible: {
     type: Number,
     required: true
-  }
+  },
+  id: {
+      type: [String, null],
+      required: true
+      }
 
 })
 
+const old = props.cantidad
+
+
 const addGasto = () => {
-  // Validar que no haya campos vacioS Y CANTIDAD 
-  const { nombre, cantidad, categoria, disponible} = props 
+        // Validar que no haya campos vacios
+  const { nombre, cantidad, categoria, disponible, id } = props
   if([nombre, cantidad, categoria].includes('')) {
-    error.value = 'Todos los campos son obligatorios!'
-    
-    setTimeout(() => {
-      error.value = ''
-    }, 2500 );
-    return 
-  }
-
-// Valdiar que usuario no gaste mas de disponible
-if(cantidad > disponible) {
-      error.value = 'Excedido de presupuesto'
-
-      setTimeout(() => {
+      error.value = 'Todos los campos son obligatorios'
+        setTimeout(() => {
         error.value = ''
-      }, 2500);
-      return
-      
+        }, 3000);
+        return
   }
 
-
-
+        // Validar la cantidad
   if(cantidad <= 0) {
-      error.value = 'Cantidad no valida'
+     error.value = 'Cantidad no válida'
+     setTimeout(() => {
+     error.value = ''
+     }, 3000);
+    return
+    }
 
-      setTimeout(() => {
+        // Validar que el usuario no gaste más de lo disponible
+    if(id) {
+            // Tomar en cuenta el gasto ya realizado
+    if( cantidad > old + disponible) {
+        error.value = 'Has excedido el Presupuesto'
+        setTimeout(() => {
         error.value = ''
-      }, 2500);
-      return
-      
+        }, 3000);
+        return 
+      }
+      } else {
+        if(cantidad > disponible) {
+          error.value = 'Has excedido el Presupuesto'
+          setTimeout(() => {
+          error.value = ''
+          }, 3000);
+          return
+        }
   }
-
   emit('save-gasto')
-
-  
-// quiero ejecutar este console.log si las validacionesa anterios se cumples, es decir si se agregaron todos los campos
 }
-
 
 
 
@@ -92,12 +99,9 @@ if(cantidad > disponible) {
     <div class="contenedor contenedor-formulario"
     :class="[modal.animar ? 'animar' : 'cerrar']"
     >
-      <form
+    <form
        class="nuevo-gasto"
        @submit.prevent="addGasto"
-       
-
-      
       >
         <legend> Añadir gasto </legend>
         <Alerta v-show="
@@ -144,7 +148,7 @@ if(cantidad > disponible) {
           <option value="salud">Salud</option>
           <option value="suscripciones">Suscripciones</option>
           </select>
-          >
+          
         </div>
         <input 
         type="submit" 

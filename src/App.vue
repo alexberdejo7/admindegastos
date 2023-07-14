@@ -36,26 +36,19 @@ watch(gastos, () => {
   deep:true
 })
 
-
-  // Limpiar formulario
-  const stateResetGasto = () => {
-  Object.assign(gasto, {
-    nombre: '',
-    cantidad: '',
-    categoria: '',
-    id: null,
-    fecha: Date.now()
-  })
-}
-//reiniciar modal
 watch(modal, () => {
-if(modal.mostrar) {
+  if(!modal.mostrar) {
   stateResetGasto();
   
 }
 }, {
   deep: true
 })
+
+  // Limpiar formulario
+
+//reiniciar modal
+
 
 
 
@@ -84,22 +77,39 @@ const cerrarModal = () => {
 }
 
 const saveGasto = () => {
-  gastos.value.push({
+  if(gasto.id) {
+    const {id} = gasto
+    const i = gastos.value.findIndex((gasto => gasto.id === id))
+    gastos.value[i] = {...gasto}
+    //editando
+  } else {
+    //registro nuevo
+    gastos.value.push({
     ...gasto,
     id: generateId(),
-  })
+    })
+  }
   cerrarModal()
   stateResetGasto()
-
-
-
 }
+
+
 
 
 const selectGasto = (id) => {
   const gastoEdit = gastos.value.filter(gasto => gasto.id === id)[0]
   Object.assign(gasto, gastoEdit)
   mostrarModal()
+}
+
+const stateResetGasto = () => {
+  Object.assign(gasto, {
+    nombre: '',
+    cantidad: '',
+    categoria: '',
+    id: null,
+    fecha: Date.now()
+  })
 }
 
 
@@ -160,6 +170,7 @@ const selectGasto = (id) => {
         @save-gasto="saveGasto"
         :modal="modal"
         :disponible="disponible"
+        :id="gasto.id"
         v-model:nombre="gasto.nombre"
         v-model:cantidad="gasto.cantidad"
         v-model:categoria="gasto.categoria"
