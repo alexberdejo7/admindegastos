@@ -1,12 +1,12 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import Alerta from './Alerta.vue'
 import cerrando from '../assets/img/cerrar.svg'
 
 const error = ref('')
 
 
-const emit = defineEmits(['cerrar-modal', 'save-gasto', 'update:nombre',
+const emit = defineEmits(['cerrar-modal', 'save-gasto', 'delete-gasto', 'update:nombre',
        'update:cantidad', 'update:categoria', ])
 
 const props = defineProps({
@@ -83,6 +83,11 @@ const addGasto = () => {
   emit('save-gasto')
 }
 
+const editing = computed(() => {
+  return props.id
+})
+
+
 
 
 </script>
@@ -103,10 +108,12 @@ const addGasto = () => {
        class="nuevo-gasto"
        @submit.prevent="addGasto"
       >
-        <legend> Añadir gasto </legend>
+        <legend> {{editing ? 'Guardar Cambios' : 'Añadir Gasto'}}</legend>
         <Alerta v-show="
         error">  {{error}}
         </Alerta>
+
+        
 
         
 
@@ -152,11 +159,22 @@ const addGasto = () => {
         </div>
         <input 
         type="submit" 
-        value="Añadir Gasto" 
+        :value="[editing ? 'Guardar cambios' : 'Añadir Gastos']" 
         >
 
 
       </form>
+
+      <button 
+      type="button"
+      class="btn-eliminar-gasto"
+      v-if="editing"
+      @click="$emit('delete-gasto')"
+      >
+
+      Eliminar Gasto
+
+      </button>
 
 
     </div>
@@ -244,5 +262,18 @@ font-size: 2.8rem;
   color: var(--blanco);
   font-weight: 500;
   cursor: pointer;
+}
+
+.btn-eliminar-gasto {
+  border: none;
+  padding: 2rem;
+  width: 100%;
+  background-color: #ef4444;
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--blanco);
+  margin-top: 5rem;
+  cursor: pointer;
+
 }
 </style>
