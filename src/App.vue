@@ -1,5 +1,5 @@
 <script setup>
-import {ref, reactive, watch, computed} from 'vue'
+import {ref, reactive, watch, computed, onMounted} from 'vue'
 import Presupuesto from './components/Presupuesto.vue'
 import ControlPresupuestoVue from './components/ControlPresupuesto.vue';
 import Modal from './components/Modal.vue'
@@ -35,6 +35,8 @@ watch(gastos, () => {
   const totalGastado = gastos.value.reduce((total, gasto) => gasto.cantidad + total, 0)
   gastado.value = totalGastado
   disponible.value = presupuesto.value - totalGastado
+
+  localStorage.setItem('gastos', JSON.stringify(gastos.value))
 }, {
   deep:true
 })
@@ -48,12 +50,22 @@ watch(modal, () => {
   deep: true
 })
 
-  // Limpiar formulario
+watch(presupuesto, () => {
+  localStorage.setItem('presupuesto', presupuesto.value)
+})
 
-//reiniciar modal
+onMounted(() => {
+  const presupuestoStorage = localStorage.getItem('presupuesto')
+  if(presupuestoStorage) {
+    presupuesto.value = Number(presupuestoStorage)
+    disponible.value = Number(presupuestoStorage)
+  }
+  const gastosinStorage = localStorage.getItem('gastos')
+  if(gastosinStorage) {
+    gastos.value = JSON.parse(gastosinStorage)
+  }
 
-
-
+})
 
 
 
@@ -128,7 +140,12 @@ const gastosFiltrados = computed(() => {
 })
 
 
-
+const resetApp = () => {
+  if(confirm('Desear reiniciar')) {
+    gastos.value = []
+    presupuesto.value = 0
+  }
+}
 
 
 </script>
@@ -153,6 +170,7 @@ const gastosFiltrados = computed(() => {
         :presupuesto="presupuesto"
         :disponible="disponible"
         :gastado="gastado"
+        @reset-app="resetApp"
        />
 
       </div>
